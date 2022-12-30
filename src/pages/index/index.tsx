@@ -2,9 +2,7 @@ import styles from "./index.less";
 import Grid from "@/components/grid";
 import Comfirm from "@/components/comfirm";
 import { useEffect, useState } from "react";
-
-//固定格子大小为20
-const GridSize = 20;
+import { GameSetting } from "@/utils";
 
 const GridList: any = [
   // { id: "1-1", zIndex: 1, row: 1, col: 1, state: 0, left: 0, top: 0, type: 1 },
@@ -40,34 +38,70 @@ const GridList: any = [
 ];
 function initGridList(GridList: any) {
   let flagList: any = {};
-  for (let i = 0; i < 100; i++) {
-    let newGrid = {
-      id: "",
-      zIndex: Math.floor(Math.random() * 5), //0-
-      row: Math.ceil(Math.random() * 10), //1-
-      col: Math.ceil(Math.random() * 10), //1-
-      state: 0,
-      left: 0,
-      top: 0,
-      type: Math.ceil(Math.random() * 12),
-    };
-    const { zIndex, row, col } = newGrid;
+  //判断是否有重复的
+  const handleIsRepeat = (element: any) => {
+    const { zIndex, row, col } = element;
+    const { GridSize, Layers, Row, Col } = GameSetting;
     if (
       flagList[zIndex] &&
       flagList[zIndex].hasOwnProperty(`${row}-${col}`) &&
       flagList[zIndex][`${row}-${col}`] === 1
     ) {
-      continue;
+      element.zIndex = Math.floor(Math.random() * Layers);
+      element.row = Math.ceil(Math.random() * Row);
+      element.col = Math.ceil(Math.random() * Col);
+      handleIsRepeat(element);
     } else {
       if (!flagList[zIndex]) {
         flagList[zIndex] = {};
       }
       flagList[zIndex][`${row}-${col}`] = 1;
-      newGrid.id = `${zIndex}-${row}-${col}`;
-      newGrid.left = zIndex * 0.5 * GridSize + (col - 1) * GridSize;
-      newGrid.top = zIndex * 0.5 * GridSize + (row - 1) * GridSize;
-      GridList.push(newGrid);
+      element.id = `${zIndex}-${row}-${col}`;
+      element.left = zIndex * 0.5 * GridSize + (col - 1) * GridSize;
+      element.top = zIndex * 0.5 * GridSize + (row - 1) * GridSize;
     }
+  };
+  for (let i = 0; i < GameSetting.Sort; i++) {
+    let type = Math.ceil(Math.random() * 12); //获取当前渲染图片值 1-12
+    let newGirds = [
+      {
+        id: "",
+        zIndex: Math.floor(Math.random() * 5),
+        row: Math.ceil(Math.random() * 10),
+        col: Math.ceil(Math.random() * 10),
+        state: 0,
+        left: 0,
+        top: 0,
+        type,
+      },
+      {
+        id: "",
+        zIndex: Math.floor(Math.random() * 5),
+        row: Math.ceil(Math.random() * 10),
+        col: Math.ceil(Math.random() * 10),
+        state: 0,
+        left: 0,
+        top: 0,
+        type,
+      },
+      {
+        id: "",
+        zIndex: Math.floor(Math.random() * 5),
+        row: Math.ceil(Math.random() * 10),
+        col: Math.ceil(Math.random() * 10),
+        state: 0,
+        left: 0,
+        top: 0,
+        type,
+      },
+    ]; //根据type初始化生成三个格子
+    //循环
+    for (let j = 0; j < newGirds.length; j++) {
+      let element = newGirds[j];
+      handleIsRepeat(element);
+    }
+    //推送新数组到GridList
+    GridList.push(...newGirds);
   }
 }
 initGridList(GridList);
@@ -86,7 +120,8 @@ initTypeList(typeList);
 export default function HomePage() {
   const [gridList, setGridList] = useState(GridList);
   const [selectedGridList, setSelectedGridList] = useState<any>([]); //选中的格子
-  const [isComfirm, setIsComfirm] = useState<boolean>(false);
+  const [isFailed, setIsFailed] = useState<boolean>(false);
+  const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
   //点击删除格子
   const removeGird = (index: number) => {
@@ -109,8 +144,6 @@ export default function HomePage() {
     typeList[type].num++;
     typeList[type].indexs.push(newSelectedGridList.length - 1);
 
-    console.log(typeList, newSelectedGridList);
-
     if (typeList[type].num === 3) {
       for (let i = newSelectedGridList.length - 1; i >= 0; i--) {
         if (newSelectedGridList[i].type === type) {
@@ -122,7 +155,7 @@ export default function HomePage() {
     }
 
     if (newSelectedGridList.length === 10) {
-      setIsComfirm(true);
+      setIsFailed(true);
       return;
     }
 
@@ -166,7 +199,7 @@ export default function HomePage() {
   //重新开始
   const hanldeReset = () => {
     setTimeout(() => {
-      setIsComfirm(false);
+      setIsFailed(false);
       window.location.reload();
     }, 1000);
   };
@@ -177,11 +210,22 @@ export default function HomePage() {
     setGridList(newGridlist);
   }, []);
 
+  useEffect(() => {
+    if (selectedGridList.length === 0) {
+      let isSuccess = false;
+      for (let i = 0; i < gridList.length; i++) {
+        if (gridList[i].state !== 2) return;
+        if (i === gridList.length - 1) isSuccess = true;
+      }
+      setIsSuccess(isSuccess);
+    }
+  }, [selectedGridList]);
+
   return (
-    <div>
+    <div className={styles.box}>
       <h2>Chinese Zodiac</h2>
       <div className={styles.container}>
-        {gridList.map((item, index) => {
+        {gridList.map((item: any, index: number) => {
           if (item.state !== 2) {
             return (
               <Grid
@@ -197,16 +241,30 @@ export default function HomePage() {
       </div>
 
       <div className={styles.footer}>
-        {selectedGridList.map((item: any) => {
-          return (
-            <Grid gridInfo={item} key={item.id} removeGird={() => {}}>
-              {item.id}
-            </Grid>
-          );
-        })}
+        <div className={styles["footer-body"]}>
+          {selectedGridList.map((item: any) => {
+            return (
+              <Grid gridInfo={item} key={item.id} removeGird={() => {}}>
+                {item.id}
+              </Grid>
+            );
+          })}
+        </div>
       </div>
 
-      <Comfirm visible={isComfirm} onOk={hanldeReset} okText={"重新开始"}></Comfirm>
+      <Comfirm
+        visible={isFailed}
+        title={"你失败了，需要重新开始一局吗？"}
+        onOk={hanldeReset}
+        okText={"重新开始"}
+      ></Comfirm>
+
+      <Comfirm
+        visible={isSuccess}
+        title={"恭喜你，顺利通关，需要再来一把吗？"}
+        onOk={hanldeReset}
+        okText={"再来一把"}
+      ></Comfirm>
     </div>
   );
 }

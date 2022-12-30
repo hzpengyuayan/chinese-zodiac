@@ -6,10 +6,10 @@ export default function Layout() {
     <div className={styles.navs}>
       <ul>
         <li>
-          <Link to="/">Home</Link>
+          <Link to="/">Play</Link>
         </li>
         <li>
-          <Link to="/user">user</Link>
+          <Link to="/setting">Setting</Link>
         </li>
         <li>
           <a href="https://gitee.com/hzpenyuyan/chinese-zodiac">Gitee</a>
