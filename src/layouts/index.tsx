@@ -12,7 +12,7 @@ export default function Layout() {
           <Link to="/user">user</Link>
         </li>
         <li>
-          <a href="https://github.com/umijs/umi">Github</a>
+          <a href="https://gitee.com/hzpenyuyan/chinese-zodiac">Gitee</a>
         </li>
       </ul>
       <Outlet />

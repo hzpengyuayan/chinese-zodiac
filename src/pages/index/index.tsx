@@ -1,59 +1,73 @@
 import styles from "./index.less";
 import Grid from "@/components/grid";
+import Comfirm from "@/components/comfirm";
 import { useEffect, useState } from "react";
 
-const GridList:any = [
+//固定格子大小为20
+const GridSize = 20;
+
+const GridList: any = [
   // { id: "1-1", zIndex: 1, row: 1, col: 1, state: 0, left: 0, top: 0, type: 1 },
   // { id: "1-2", zIndex: 1, row: 1, col: 2, state: 0, left: 0, top: 0, type: 2 },
   // { id: "1-3", zIndex: 1, row: 1, col: 3, state: 0, left: 0, top: 0, type: 3 },
-  // { id: "1-4", zIndex: 1, row: 2, col: 1, state: 0, left: 0, top: 0, type: 4 },
-  // { id: "1-5", zIndex: 1, row: 2, col: 2, state: 0, left: 0, top: 0, type: 5 },
-  // { id: "1-6", zIndex: 1, row: 2, col: 3, state: 0, left: 0, top: 0, type: 6 },
-  // { id: "1-7", zIndex: 1, row: 3, col: 1, state: 0, left: 0, top: 0, type: 7 },
-  // { id: "1-8", zIndex: 1, row: 3, col: 2, state: 0, left: 0, top: 0, type: 8 },
-  // { id: "1-9", zIndex: 1, row: 3, col: 3, state: 0, left: 0, top: 0, type: 9 },
-  // {
-  //   id: "1-10",
-  //   zIndex: 1,
-  //   row: 4,
-  //   col: 1,
-  //   state: 0,
-  //   left: 0,
-  //   top: 0,
-  //   type: 10,
-  // },
-  // { id: "2-1", zIndex: 2, row: 1, col: 1, state: 0, left: 0, top: 0, type: 1 },
-  // // { id: "2-2", zIndex: 2, row: 1, col: 2, state: 0, left: 0, top: 0,type: 1 },
-  // { id: "2-3", zIndex: 2, row: 2, col: 1, state: 0, left: 0, top: 0, type: 1 },
-  // { id: "2-4", zIndex: 2, row: 2, col: 2, state: 0, left: 0, top: 0, type: 1 },
-  // // { id: "3-1", zIndex: 3, row: 1, col: 1, state: 0, left: 0, top: 0,type: 1 },
-  //   { id: "1-1", zIndex: 1, row: 1, col: 1, state: 0, left: 0, top: 0, type: 1 },
-  //   { id: "1-2", zIndex: 1, row: 1, col: 2, state: 0, left: 0, top: 0, type: 2 },
-  //   { id: "1-3", zIndex: 1, row: 1, col: 3, state: 0, left: 0, top: 0, type: 3 },
-  //   { id: "1-4", zIndex: 1, row: 1, col: 4, state: 0, left: 0, top: 0, type: 4 },
-  //   { id: "1-5", zIndex: 1, row: 2, col: 1, state: 0, left: 0, top: 0, type: 5 },
-  //   { id: "1-6", zIndex: 1, row: 2, col: 2, state: 0, left: 0, top: 0, type: 6 },
-  //   { id: "1-7", zIndex: 1, row: 2, col: 3, state: 0, left: 0, top: 0, type: 7 },
-  //   { id: "1-8", zIndex: 1, row: 2, col: 4, state: 0, left: 0, top: 0, type: 8 },
-  //   { id: "1-9", zIndex: 1, row: 3, col: 1, state: 0, left: 0, top: 0, type: 9 },
-  //  { id: "1-10", zIndex: 1, row: 3, col: 2, state: 0, left: 0, top: 0, type: 10 },
-  //  { id: "1-11", zIndex: 1, row: 3, col: 3, state: 0, left: 0, top: 0, type: 11 },
-  //  { id: "1-12", zIndex: 1, row: 3, col: 4, state: 0, left: 0, top: 0, type: 12 },
+  // { id: "1-4", zIndex: 1, row: 1, col: 4, state: 0, left: 0, top: 0, type: 4 },
+  // { id: "1-5", zIndex: 1, row: 2, col: 1, state: 0, left: 0, top: 0, type: 5 },
+  // { id: "1-6", zIndex: 1, row: 2, col: 2, state: 0, left: 0, top: 0, type: 6 },
+  // { id: "1-7", zIndex: 1, row: 2, col: 3, state: 0, left: 0, top: 0, type: 7 },
+  // { id: "1-8", zIndex: 1, row: 2, col: 4, state: 0, left: 0, top: 0, type: 8 },
+  // { id: "1-9", zIndex: 1, row: 3, col: 1, state: 0, left: 0, top: 0, type: 9 },
+  // { id: "1-10", zIndex: 1, row: 3, col: 2, state: 0, left: 0, top: 0, type: 10 },
+  // { id: "1-11", zIndex: 1, row: 3, col: 3, state: 0, left: 0, top: 0, type: 11 },
+  // { id: "1-12", zIndex: 1, row: 3, col: 4, state: 0, left: 0, top: 0, type: 12 },
+  // { id: "1-13", zIndex: 1, row: 4, col: 1, state: 0, left: 0, top: 0, type: 1 },
+  // { id: "1-14", zIndex: 1, row: 4, col: 2, state: 0, left: 0, top: 0, type: 2 },
+  // { id: "1-15", zIndex: 1, row: 4, col: 3, state: 0, left: 0, top: 0, type: 3 },
+  // { id: "1-16", zIndex: 1, row: 4, col: 4, state: 0, left: 0, top: 0, type: 4 },
+  // { id: "2-1", zIndex: 2, row: 1, col: 1, state: 0, left: 0, top: 0, type: 1},
+  // { id: "2-2", zIndex: 2, row: 1, col: 2, state: 0, left: 0, top: 0, type: 2},
+  // { id: "2-3", zIndex: 2, row: 1, col: 3, state: 0, left: 0, top: 0, type: 3},
+  // { id: "2-4", zIndex: 2, row: 2, col: 1, state: 0, left: 0, top: 0, type: 4},
+  // { id: "2-5", zIndex: 2, row: 2, col: 2, state: 0, left: 0, top: 0, type: 5},
+  // { id: "2-6", zIndex: 2, row: 2, col: 3, state: 0, left: 0, top: 0, type: 6},
+  // { id: "2-7", zIndex: 2, row: 3, col: 1, state: 0, left: 0, top: 0, type: 7},
+  // { id: "2-8", zIndex: 2, row: 3, col: 2, state: 0, left: 0, top: 0, type: 8},
+  // { id: "2-9", zIndex: 2, row: 3, col: 3, state: 0, left: 0, top: 0, type: 9},
+  // { id: "3-1", zIndex: 3, row: 1, col: 1, state: 0, left: 0, top: 0, type: 1},
+  // { id: "3-2", zIndex: 3, row: 1, col: 2, state: 0, left: 0, top: 0, type: 2},
+  // { id: "3-3", zIndex: 3, row: 2, col: 1, state: 0, left: 0, top: 0, type: 3},
+  // { id: "3-4", zIndex: 3, row: 2, col: 2, state: 0, left: 0, top: 0, type: 4},
+  // { id: "4-1", zIndex: 4, row: 1, col: 1, state: 0, left: 0, top: 0, type: 1},
 ];
 function initGridList(GridList: any) {
-  console.log(Math.floor(Math.random()*5));
-  
-  for (let i = 0; i < 108; i++) {
-    GridList.push({
-      id: Math.random(),
-      zIndex: Math.ceil(Math.random()*3),
-      row: Math.ceil(Math.random()*10),
-      col: Math.ceil(Math.random()*10),
+  let flagList: any = {};
+  for (let i = 0; i < 100; i++) {
+    let newGrid = {
+      id: "",
+      zIndex: Math.floor(Math.random() * 5), //0-
+      row: Math.ceil(Math.random() * 10), //1-
+      col: Math.ceil(Math.random() * 10), //1-
       state: 0,
       left: 0,
       top: 0,
-      type: Math.ceil(Math.random()*12),
-    });
+      type: Math.ceil(Math.random() * 12),
+    };
+    const { zIndex, row, col } = newGrid;
+    if (
+      flagList[zIndex] &&
+      flagList[zIndex].hasOwnProperty(`${row}-${col}`) &&
+      flagList[zIndex][`${row}-${col}`] === 1
+    ) {
+      continue;
+    } else {
+      if (!flagList[zIndex]) {
+        flagList[zIndex] = {};
+      }
+      flagList[zIndex][`${row}-${col}`] = 1;
+      newGrid.id = `${zIndex}-${row}-${col}`;
+      newGrid.left = zIndex * 0.5 * GridSize + (col - 1) * GridSize;
+      newGrid.top = zIndex * 0.5 * GridSize + (row - 1) * GridSize;
+      GridList.push(newGrid);
+    }
   }
 }
 initGridList(GridList);
@@ -72,6 +86,7 @@ initTypeList(typeList);
 export default function HomePage() {
   const [gridList, setGridList] = useState(GridList);
   const [selectedGridList, setSelectedGridList] = useState<any>([]); //选中的格子
+  const [isComfirm, setIsComfirm] = useState<boolean>(false);
 
   //点击删除格子
   const removeGird = (index: number) => {
@@ -90,22 +105,25 @@ export default function HomePage() {
     newSelectedGridList.push(grid);
 
     let { type } = grid;
-    console.log(grid);
+
     typeList[type].num++;
     typeList[type].indexs.push(newSelectedGridList.length - 1);
 
-   
+    console.log(typeList, newSelectedGridList);
 
     if (typeList[type].num === 3) {
-      for (let i = typeList[type].indexs.length - 1; i >= 0; i--) {
-        newSelectedGridList.splice(i, 1);
+      for (let i = newSelectedGridList.length - 1; i >= 0; i--) {
+        if (newSelectedGridList[i].type === type) {
+          newSelectedGridList.splice(i, 1);
+        }
       }
       typeList[type].num = 0;
       typeList[type].indexs = [];
     }
 
     if (newSelectedGridList.length === 10) {
-      return window.alert("你失败了！！！");
+      setIsComfirm(true);
+      return;
     }
 
     setSelectedGridList(newSelectedGridList);
@@ -122,7 +140,8 @@ export default function HomePage() {
       } = newGridlist[i];
       if (targetState !== 2) {
         let isClick = true;
-        for (let j = i + 1; j < newGridlist.length; j++) {
+        //TODO
+        for (let j = 0; j < newGridlist.length; j++) {
           let {
             left: OtherLeft,
             top: OtherTop,
@@ -141,37 +160,22 @@ export default function HomePage() {
         }
         if (isClick) newGridlist[i].state = 1;
       }
-      // isClick &&
-      // isClick ? (newGridlist[i].state = 1) : (newGridlist[i].state = 0);
     }
+  };
+
+  //重新开始
+  const hanldeReset = () => {
+    setTimeout(() => {
+      setIsComfirm(false);
+      window.location.reload();
+    }, 1000);
   };
 
   useEffect(() => {
     let newGridlist = gridList.slice();
-    //固定格子大小为20
-    const GridSize = 20;
-    newGridlist.forEach((item: any) => {
-      let left = (item.zIndex - 1) * 0.5 * GridSize + (item.col - 1) * GridSize;
-      let top = (item.zIndex - 1) * 0.5 * GridSize + (item.row - 1) * GridSize;
-      item["left"] = left;
-      item["top"] = top;
-    });
-    //判断格子是否可点击
     initGirdState(newGridlist);
     setGridList(newGridlist);
   }, []);
-
-  // useEffect(() => {
-  //   selectedGridList.forEach((item:any,index:number) => {
-  //     let {type} = item;
-  //     typeList[type].num ++;
-  //     // typeList[type]["index"].push(index)
-  //     console.log(typeList[type]);
-  //   });
-  //   // console.log(selectedGridList);
-  //   //删除三个重复type的格子
-  //   // setSelectedGridList([])
-  // }, [selectedGridList]);
 
   return (
     <div>
@@ -201,6 +205,8 @@ export default function HomePage() {
           );
         })}
       </div>
+
+      <Comfirm visible={isComfirm} onOk={hanldeReset} okText={"重新开始"}></Comfirm>
     </div>
   );
 }

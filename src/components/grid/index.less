@@ -1,19 +1,14 @@
+@gridSize: 20px; //格子大小为20px
+
 .grid {
   display: inline-block;
-  width: 20px;
-  height: 20px;
+  width: @gridSize;
+  height: @gridSize;
   border: 1px solid #ccc;
-  // background-color: #ccc;
-  background-image: url('../../assets/Zodiac.png') ;
-  background-repeat:no-repeat;
+  background-image: url("../../assets/Zodiac.png");
+  background-repeat: no-repeat;
   background-size: 70px 68px;
-  // background-position: 0px 0px;
   background-blend-mode: multiply;
   font-size: 9px;
   position: absolute;
-}
-.isLayer {
-  position: absolute;
-  top: 10px;
-  left: 10px;
 }

@@ -13,17 +13,17 @@ export default function index(props: {
 }) {
   const { gridInfo } = props;
 
-  //获取向上偏移量
-  const getTop = () => {
-    const { row, zIndex } = gridInfo;
-    return (zIndex - 1) * 0.5 * GridSize + (row - 1) * GridSize;
-  };
+  // //获取向上偏移量
+  // const getTop = () => {
+  //   const { row, zIndex } = gridInfo;
+  //   return (zIndex - 1) * 0.5 * GridSize + (row - 1) * GridSize;
+  // };
 
-  //获取向左偏移量
-  const getLeft = () => {
-    const { col, zIndex } = gridInfo;
-    return (zIndex - 1) * 0.5 * GridSize + (col - 1) * GridSize;
-  };
+  // //获取向左偏移量
+  // const getLeft = () => {
+  //   const { col, zIndex } = gridInfo;
+  //   return (zIndex - 1) * 0.5 * GridSize + (col - 1) * GridSize;
+  // };
 
   //点击事件
   const handleClick = () => {
@@ -45,11 +45,14 @@ export default function index(props: {
         <div
           className={styles.grid}
           style={{
-            top: getTop(),
-            left: getLeft(),
+            top: gridInfo.top,
+            left: gridInfo.left,
+            // top: getTop(),
+            // left: getLeft(),
             cursor: `${gridInfo.state === 1 && "pointer"}`,
             backgroundPosition: getPosition(),
             backgroundColor: `${gridInfo.state === 1 ? "#fff" : "gray"}`,
+            zIndex: gridInfo.zIndex,
           }}
           onClick={handleClick}
         >
@@ -61,7 +64,7 @@ export default function index(props: {
         <div
           className={styles.grid}
           style={{
-            position:"static",
+            position: "static",
             backgroundPosition: getPosition(),
           }}
         ></div>
