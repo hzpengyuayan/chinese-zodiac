@@ -135,11 +135,14 @@ export default function HomePage() {
 
   //增加至底部格子列
   const addToFooter = (grid: any) => {
-    // console.log(gridList[index]);
     let newSelectedGridList = selectedGridList.slice();
-    newSelectedGridList.push(grid);
-
     let { type } = grid;
+    let index = newSelectedGridList.findLastIndex((item: { type: any; }) => item.type === type);
+    if (index === -1) {
+      newSelectedGridList.push(grid);
+    } else {
+      newSelectedGridList.splice(index, 0, grid);//重复元素放在一起
+    }
 
     typeList[type].num++;
     typeList[type].indexs.push(newSelectedGridList.length - 1);
@@ -244,7 +247,7 @@ export default function HomePage() {
         <div className={styles["footer-body"]}>
           {selectedGridList.map((item: any) => {
             return (
-              <Grid gridInfo={item} key={item.id} removeGird={() => {}}>
+              <Grid gridInfo={item} key={item.id} removeGird={() => { }}>
                 {item.id}
               </Grid>
             );
