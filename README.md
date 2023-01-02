@@ -1,19 +1,18 @@
 # 羊了个羊（十二生肖版）
 
 #### 介绍
-这是一个三消类的游戏，简化版的羊了个羊，以十二生肖为素材，你可以基于这个定制你自己的游戏。
-目前：还在开发优化中。
+基于ts、umi、react完成的简化版的羊了个羊（纯前端渲染），以十二生肖为素材，当然你可以基于这个定制你自己的游戏。 目前：还在开发优化中。
 
 #### 软件架构
-本游戏借助于umi、react快速构建简易平台
-软件架构说明
+基于ts、umi、react完成的简化版的羊了个羊（纯前端渲染）
+需要用户了解ts、umi、react的相关使用
 
 
 #### 安装教程
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+1.  git clone git@gitee.com:hzpenyuyan/chinese-zodiac.git
+2.  git i
+3.  npm run start
 
 #### 使用说明
 
@@ -21,19 +20,5 @@
 2.  xxxx
 3.  xxxx
 
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
 
 
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
