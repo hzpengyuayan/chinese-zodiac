@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { connect } from "dva";
-import { Slider } from "@/components";
+import { Slider, Button } from "@/components";
 import styles from "./index.less";
 
 const SettingsInfo = [
@@ -180,12 +180,7 @@ function index({ dispatch, setting }) {
           </li>
         </ul>
         <div className={styles["setting-defined-btn"]}>
-          <button
-            className={styles["setting-defined-save"]}
-            onClick={handleSaveDefinedSetting}
-          >
-            保存自定义设置
-          </button>
+          <Button onClick={handleSaveDefinedSetting}>保存自定义设置</Button>
         </div>
       </div>
     </div>
