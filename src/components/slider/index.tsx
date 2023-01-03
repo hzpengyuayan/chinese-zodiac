@@ -1,12 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./index.less";
-interface Props {
-  min: number;
-  max: number;
-  value: number;
-  step?: number; //默认为1
-  onChange?: Function;
-}
+import { Props } from "./interface";
 
 export function Slider(props: Props) {
   let { min, max, step = 1, value, onChange } = props;
@@ -20,7 +14,7 @@ export function Slider(props: Props) {
         max={max}
         step={step}
         value={value}
-        onInput={(e) => {
+        onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
           onChange && onChange(e.target.value);
         }}
         style={{
