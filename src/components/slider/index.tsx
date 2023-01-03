@@ -1,19 +1,15 @@
-import React, { useState } from 'react'
-import styles from './index.less'
+import React, { useState } from "react";
+import styles from "./index.less";
 interface Props {
-  min?: number
-  max?: number
-  value?: number
-  step?: number
-  onChange?:Function
+  min: number;
+  max: number;
+  value: number;
+  step?: number; //默认为1
+  onChange?: Function;
 }
 
-export default function index(props: Props) {
-
-  let { min, max, step, value, onChange} = props
-  // const [value, setValue] = useState(props.value)
-  // console.log(props);
-
+export function Slider(props: Props) {
+  let { min, max, step = 1, value, onChange } = props;
   return (
     <div>
       <span>{min}</span>
@@ -25,9 +21,7 @@ export default function index(props: Props) {
         step={step}
         value={value}
         onInput={(e) => {
-          console.log(e.target.value)
-          onChange(e.target.value)
-          // setValue(e.target.value)
+          onChange && onChange(e.target.value);
         }}
         style={{
           backgroundSize: `${(value / max) * 100}%`,
@@ -35,5 +29,5 @@ export default function index(props: Props) {
       />
       <span>{max}</span>
     </div>
-  )
+  );
 }

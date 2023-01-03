@@ -4,7 +4,7 @@ import styles from "./index.less";
 //格子固定大小
 const GridSize = 20;
 
-export default function index(props: {
+export function Grid(props: {
   children?: ReactNode;
   gridInfo?: any;
   removeGird: Function;

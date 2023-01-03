@@ -5,13 +5,13 @@ export default function Layout() {
   return (
     <div className={styles.navs}>
       <ul>
-        <li>
+        <li className={styles.nav}>
           <Link to="/">Play</Link>
         </li>
-        <li>
+        <li className={styles.nav}>
           <Link to="/setting">Setting</Link>
         </li>
-        <li>
+        <li className={styles.nav}>
           <a href="https://gitee.com/hzpenyuyan/chinese-zodiac">Gitee</a>
         </li>
       </ul>

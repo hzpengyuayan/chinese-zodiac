@@ -1,6 +1,6 @@
 {
   "private": true,
-  "author":"张成圆 <zhangchengyuan@biosan.cn>",
+  "author": "张成圆 <zhangchengyuan@biosan.cn>",
   "scripts": {
     "dev": "umi dev",
     "build": "umi build",
@@ -14,6 +14,7 @@
   "devDependencies": {
     "@types/react": "^18.0.0",
     "@types/react-dom": "^18.0.0",
+    "@umijs/plugins": "^4.0.41",
     "typescript": "^4.1.2"
   }
 }
