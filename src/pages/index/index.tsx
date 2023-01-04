@@ -1,56 +1,37 @@
 import styles from "./index.less";
 import { Comfirm, Grid } from "@/components";
+import { GridNode, GameSetting } from "@/typings";
 import { useEffect, useState } from "react";
 import { connect } from "dva";
 
-// let GridList: any = [
-//   // { id: "1-1", zIndex: 1, row: 1, col: 1, state: 0, left: 0, top: 0, type: 1 },
-//   // { id: "1-2", zIndex: 1, row: 1, col: 2, state: 0, left: 0, top: 0, type: 2 },
-//   // { id: "1-3", zIndex: 1, row: 1, col: 3, state: 0, left: 0, top: 0, type: 3 },
-//   // { id: "1-4", zIndex: 1, row: 1, col: 4, state: 0, left: 0, top: 0, type: 4 },
-//   // { id: "1-5", zIndex: 1, row: 2, col: 1, state: 0, left: 0, top: 0, type: 5 },
-//   // { id: "1-6", zIndex: 1, row: 2, col: 2, state: 0, left: 0, top: 0, type: 6 },
-//   // { id: "1-7", zIndex: 1, row: 2, col: 3, state: 0, left: 0, top: 0, type: 7 },
-//   // { id: "1-8", zIndex: 1, row: 2, col: 4, state: 0, left: 0, top: 0, type: 8 },
-//   // { id: "1-9", zIndex: 1, row: 3, col: 1, state: 0, left: 0, top: 0, type: 9 },
-//   // { id: "1-10", zIndex: 1, row: 3, col: 2, state: 0, left: 0, top: 0, type: 10 },
-//   // { id: "1-11", zIndex: 1, row: 3, col: 3, state: 0, left: 0, top: 0, type: 11 },
-//   // { id: "1-12", zIndex: 1, row: 3, col: 4, state: 0, left: 0, top: 0, type: 12 },
-//   // { id: "1-13", zIndex: 1, row: 4, col: 1, state: 0, left: 0, top: 0, type: 1 },
-//   // { id: "1-14", zIndex: 1, row: 4, col: 2, state: 0, left: 0, top: 0, type: 2 },
-//   // { id: "1-15", zIndex: 1, row: 4, col: 3, state: 0, left: 0, top: 0, type: 3 },
-//   // { id: "1-16", zIndex: 1, row: 4, col: 4, state: 0, left: 0, top: 0, type: 4 },
-//   // { id: "2-1", zIndex: 2, row: 1, col: 1, state: 0, left: 0, top: 0, type: 1},
-//   // { id: "2-2", zIndex: 2, row: 1, col: 2, state: 0, left: 0, top: 0, type: 2},
-//   // { id: "2-3", zIndex: 2, row: 1, col: 3, state: 0, left: 0, top: 0, type: 3},
-//   // { id: "2-4", zIndex: 2, row: 2, col: 1, state: 0, left: 0, top: 0, type: 4},
-//   // { id: "2-5", zIndex: 2, row: 2, col: 2, state: 0, left: 0, top: 0, type: 5},
-//   // { id: "2-6", zIndex: 2, row: 2, col: 3, state: 0, left: 0, top: 0, type: 6},
-//   // { id: "2-7", zIndex: 2, row: 3, col: 1, state: 0, left: 0, top: 0, type: 7},
-//   // { id: "2-8", zIndex: 2, row: 3, col: 2, state: 0, left: 0, top: 0, type: 8},
-//   // { id: "2-9", zIndex: 2, row: 3, col: 3, state: 0, left: 0, top: 0, type: 9},
-//   // { id: "3-1", zIndex: 3, row: 1, col: 1, state: 0, left: 0, top: 0, type: 1},
-//   // { id: "3-2", zIndex: 3, row: 1, col: 2, state: 0, left: 0, top: 0, type: 2},
-//   // { id: "3-3", zIndex: 3, row: 2, col: 1, state: 0, left: 0, top: 0, type: 3},
-//   // { id: "3-4", zIndex: 3, row: 2, col: 2, state: 0, left: 0, top: 0, type: 4},
-//   // { id: "4-1", zIndex: 4, row: 1, col: 1, state: 0, left: 0, top: 0, type: 1},
-// ];
-function initGridList(GameSetting: any) {
-  //GridList = [];白屏错误
-  let GridList: any = [];
-  let flagList: any = {};
+//随机生成格子列表
+function initGridList(GameSetting: GameSetting) {
+  const { GridSize, Sort, Layers, Row, Col } = GameSetting;
+  let GridList: any = []; //总渲染格子列表
+  let flagList: any = {}; //总渲染格子标签列表-判断是否重复
+
+  //初始化格子样式
+  const initGirdStyle = () => {
+    let zIndex = Math.floor(Math.random() * Layers); //随机生成层数
+    return {
+      zIndex,
+      row: Math.ceil(Math.random() * (Row - zIndex)), //根据层数，随机生成行
+      col: Math.ceil(Math.random() * (Col - zIndex)), //根据层数，随机生成列
+    };
+  };
+
   //判断是否有重复的
-  const handleIsRepeat = (element: any) => {
+  const handleIsRepeat = (element: GridNode) => {
     const { zIndex, row, col } = element;
-    const { GridSize, Layers, Row, Col } = GameSetting;
     if (
       flagList[zIndex] &&
       flagList[zIndex].hasOwnProperty(`${row}-${col}`) &&
       flagList[zIndex][`${row}-${col}`] === 1
     ) {
-      element.zIndex = Math.floor(Math.random() * Layers);
-      element.row = Math.ceil(Math.random() * Row);
-      element.col = Math.ceil(Math.random() * Col);
+      element = {
+        ...element,
+        ...initGirdStyle(),
+      };
       handleIsRepeat(element);
     } else {
       if (!flagList[zIndex]) {
@@ -62,52 +43,31 @@ function initGridList(GameSetting: any) {
       element.top = zIndex * 0.5 * GridSize + (row - 1) * GridSize;
     }
   };
-  for (let i = 0; i < GameSetting.Sort; i++) {
+
+  //生成3*sort个格子
+  for (let i = 0; i < Sort; i++) {
     let type = Math.ceil(Math.random() * 12); //获取当前渲染图片值 1-12
-    const { Layers, Row, Col } = GameSetting;
-    let newGirds = [
-      {
+    let newGirds: GridNode[] = [];
+    //根据type初始化生成三个格子
+    for (let j = 0; j < 3; j++) {
+      let newGird = {
         id: "",
-        zIndex: Math.floor(Math.random() * Layers),
-        row: Math.ceil(Math.random() * Row),
-        col: Math.ceil(Math.random() * Col),
         state: 0,
         left: 0,
         top: 0,
         type,
-      },
-      {
-        id: "",
-        zIndex: Math.floor(Math.random() * Layers),
-        row: Math.ceil(Math.random() * Row),
-        col: Math.ceil(Math.random() * Col),
-        state: 0,
-        left: 0,
-        top: 0,
-        type,
-      },
-      {
-        id: "",
-        zIndex: Math.floor(Math.random() * Layers),
-        row: Math.ceil(Math.random() * Row),
-        col: Math.ceil(Math.random() * Col),
-        state: 0,
-        left: 0,
-        top: 0,
-        type,
-      },
-    ]; //根据type初始化生成三个格子
-    //循环
-    for (let j = 0; j < newGirds.length; j++) {
-      let element = newGirds[j];
-      handleIsRepeat(element);
+        ...initGirdStyle(),
+      };
+      //判断三个格子是否有重复位置的
+      handleIsRepeat(newGird);
+      newGirds.push(newGird)
     }
     //推送新数组到GridList
     GridList.push(...newGirds);
   }
+
   return GridList;
 }
-// initGridList(GridList, GameSetting);
 
 let typeList: any = [];
 function initTypeList(typeList: any) {
@@ -123,6 +83,7 @@ initTypeList(typeList);
 function index({ dispatch, setting }) {
   console.log(setting);
 
+  //const [gridList, setGridList] = useState(GridList);
   const [gridList, setGridList] = useState(initGridList(setting));
   const [selectedGridList, setSelectedGridList] = useState<any>([]); //选中的格子
   const [isFailed, setIsFailed] = useState<boolean>(false);
