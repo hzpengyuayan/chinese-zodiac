@@ -11,7 +11,7 @@ export function Grid(props: Props) {
   //点击事件
   const handleClick = () => {
     if (gridInfo.state === 1) {
-      props.removeGird(); //删除此格子
+      props.removeGird && props.removeGird(); //删除此格子
     }
   };
 

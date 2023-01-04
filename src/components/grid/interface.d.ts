@@ -1,5 +1,5 @@
 import { GridNode } from "@/typings";
 export interface Props {
   gridInfo: GridNode;
-  removeGird: Function;
+  removeGird?: Function;
 }

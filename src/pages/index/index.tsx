@@ -116,10 +116,11 @@ function initTypeList(typeList: any) {
 }
 initTypeList(typeList);
 
-function index({ dispatch, setting }) {
-  // console.log(setting);
-  const [gridList, setGridList] = useState(() => initGridList(setting));
-  const [selectedGridList, setSelectedGridList] = useState<any>([]); //选中的格子
+function index({ setting }: { setting: GameSetting }) {
+  const [gridList, setGridList] = useState<GridNode[]>(() =>
+    initGridList(setting)
+  );
+  const [selectedGridList, setSelectedGridList] = useState<GridNode[]>([]); //选中的格子
   const [isFailed, setIsFailed] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
@@ -134,12 +135,18 @@ function index({ dispatch, setting }) {
   };
 
   //增加至底部格子列
-  const addToFooter = (grid: any) => {
+  const addToFooter = (grid: GridNode) => {
     let newSelectedGridList = selectedGridList.slice();
     let { type } = grid;
-    let index = newSelectedGridList.findLastIndex(
-      (item: { type: any }) => item.type === type
-    );
+
+    //找到最后一个符合条件的元素下标
+    let index = -1;
+    for (let i = newSelectedGridList.length - 1; i >= 0; i--) {
+      if (newSelectedGridList[i].type === type) {
+        index = i;
+        break;
+      }
+    }
     if (index === -1) {
       newSelectedGridList.push(grid);
     } else {
@@ -167,40 +174,6 @@ function index({ dispatch, setting }) {
     setSelectedGridList(newSelectedGridList);
   };
 
-  //重新判断格子是否可点击
-  // const initGirdState = (newGridlist: any) => {
-  //   for (let i = 0; i < newGridlist.length; i++) {
-  //     let {
-  //       left: targetLeft,
-  //       top: targetTop,
-  //       zIndex: targetZIndex,
-  //       state: targetState,
-  //     } = newGridlist[i];
-  //     if (targetState !== 2) {
-  //       let isClick = true;
-  //       //TODO
-  //       for (let j = 0; j < newGridlist.length; j++) {
-  //         let {
-  //           left: OtherLeft,
-  //           top: OtherTop,
-  //           zIndex: OtherZIndex,
-  //           state: OtherState,
-  //         } = newGridlist[j];
-  //         if (
-  //           targetZIndex < OtherZIndex &&
-  //           Math.abs(OtherLeft - targetLeft) <= 10 &&
-  //           Math.abs(OtherTop - targetTop) <= 10 &&
-  //           OtherState !== 2
-  //         ) {
-  //           isClick = false;
-  //           continue;
-  //         }
-  //       }
-  //       if (isClick) newGridlist[i].state = 1;
-  //     }
-  //   }
-  // };
-
   //重新开始
   const hanldeReset = () => {
     setTimeout(() => {
@@ -208,15 +181,6 @@ function index({ dispatch, setting }) {
       window.location.reload();
     }, 1000);
   };
-
-  // useEffect(() => {
-  //   // GridList = [];
-  //   // initGridList(GridList, setting);
-  //   // console.log(GridList, setting);
-  //   // let newGridlist = gridList.slice();
-  //   // initGirdState(newGridlist);
-  //   // setGridList(newGridlist);
-  // }, []);
 
   useEffect(() => {
     if (selectedGridList.length === 0) {
@@ -236,8 +200,12 @@ function index({ dispatch, setting }) {
         <div
           style={{
             position: "absolute",
-            top: `${(15 - setting.Row) * 0.5 * 20}px`,
-            left: `${(15 - setting.Col) * 0.5 * 20}px`,
+            top: `${
+              (300 / setting.GridSize - setting.Row) * 0.5 * setting.GridSize
+            }px`,
+            left: `${
+              (300 / setting.GridSize - setting.Col) * 0.5 * setting.GridSize
+            }px`,
           }}
         >
           {gridList.map((item: any, index: number) => {
@@ -279,6 +247,6 @@ function index({ dispatch, setting }) {
   );
 }
 
-export default connect(({ setting }) => ({
+export default connect(({ setting }: { setting: GameSetting }) => ({
   setting,
 }))(index);
