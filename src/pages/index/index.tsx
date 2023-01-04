@@ -246,9 +246,7 @@ function index({ dispatch, setting }) {
                 gridInfo={item}
                 key={item.id}
                 removeGird={() => removeGird(index)}
-              >
-                {item.id}
-              </Grid>
+              ></Grid>
             );
           }
         })}
@@ -257,11 +255,7 @@ function index({ dispatch, setting }) {
       <div className={styles.footer}>
         <div className={styles["footer-body"]}>
           {selectedGridList.map((item: any) => {
-            return (
-              <Grid gridInfo={item} key={item.id} removeGird={() => {}}>
-                {item.id}
-              </Grid>
-            );
+            return <Grid gridInfo={item} key={item.id}></Grid>;
           })}
         </div>
       </div>
