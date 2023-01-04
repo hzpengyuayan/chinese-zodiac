@@ -7,7 +7,7 @@ import { connect } from "dva";
 //随机生成格子列表
 function initGridList(GameSetting: GameSetting) {
   const { GridSize, Sort, Layers, Row, Col } = GameSetting;
-  let GridList: any = []; //总渲染格子列表
+  let GridList: GridNode[] = []; //总渲染格子列表
   let flagList: any = {}; //总渲染格子标签列表-判断是否重复
 
   //初始化格子样式
@@ -22,16 +22,15 @@ function initGridList(GameSetting: GameSetting) {
 
   //判断是否有重复的
   const handleIsRepeat = (element: GridNode) => {
-    const { zIndex, row, col } = element;
+    let { zIndex, row, col } = element;
     if (
       flagList[zIndex] &&
       flagList[zIndex].hasOwnProperty(`${row}-${col}`) &&
       flagList[zIndex][`${row}-${col}`] === 1
     ) {
-      element = {
-        ...element,
-        ...initGirdStyle(),
-      };
+      element.zIndex = Math.floor(Math.random() * Layers);
+      element.row = Math.ceil(Math.random() * (Row - element.zIndex));
+      element.col = Math.ceil(Math.random() * (Col - element.zIndex));
       handleIsRepeat(element);
     } else {
       if (!flagList[zIndex]) {
@@ -60,13 +59,50 @@ function initGridList(GameSetting: GameSetting) {
       };
       //判断三个格子是否有重复位置的
       handleIsRepeat(newGird);
-      newGirds.push(newGird)
+      newGirds.push(newGird);
     }
     //推送新数组到GridList
     GridList.push(...newGirds);
   }
 
+  //初始化所有格子状态
+  initGirdState(GridList);
+
   return GridList;
+}
+
+//初始化格子状态
+function initGirdState(GridList: GridNode[]) {
+  for (let i = 0; i < GridList.length; i++) {
+    let {
+      left: targetLeft,
+      top: targetTop,
+      zIndex: targetZIndex,
+      state: targetState,
+    } = GridList[i];
+    if (targetState !== 2) {
+      let isClick = true;
+      //TODO
+      for (let j = 0; j < GridList.length; j++) {
+        let {
+          left: OtherLeft,
+          top: OtherTop,
+          zIndex: OtherZIndex,
+          state: OtherState,
+        } = GridList[j];
+        if (
+          targetZIndex < OtherZIndex &&
+          Math.abs(OtherLeft - targetLeft) <= 10 &&
+          Math.abs(OtherTop - targetTop) <= 10 &&
+          OtherState !== 2
+        ) {
+          isClick = false;
+          continue;
+        }
+      }
+      if (isClick) GridList[i].state = 1;
+    }
+  }
 }
 
 let typeList: any = [];
@@ -81,10 +117,8 @@ function initTypeList(typeList: any) {
 initTypeList(typeList);
 
 function index({ dispatch, setting }) {
-  console.log(setting);
-
-  //const [gridList, setGridList] = useState(GridList);
-  const [gridList, setGridList] = useState(initGridList(setting));
+  // console.log(setting);
+  const [gridList, setGridList] = useState(() => initGridList(setting));
   const [selectedGridList, setSelectedGridList] = useState<any>([]); //选中的格子
   const [isFailed, setIsFailed] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
@@ -134,38 +168,38 @@ function index({ dispatch, setting }) {
   };
 
   //重新判断格子是否可点击
-  const initGirdState = (newGridlist: any) => {
-    for (let i = 0; i < newGridlist.length; i++) {
-      let {
-        left: targetLeft,
-        top: targetTop,
-        zIndex: targetZIndex,
-        state: targetState,
-      } = newGridlist[i];
-      if (targetState !== 2) {
-        let isClick = true;
-        //TODO
-        for (let j = 0; j < newGridlist.length; j++) {
-          let {
-            left: OtherLeft,
-            top: OtherTop,
-            zIndex: OtherZIndex,
-            state: OtherState,
-          } = newGridlist[j];
-          if (
-            targetZIndex < OtherZIndex &&
-            Math.abs(OtherLeft - targetLeft) <= 10 &&
-            Math.abs(OtherTop - targetTop) <= 10 &&
-            OtherState !== 2
-          ) {
-            isClick = false;
-            continue;
-          }
-        }
-        if (isClick) newGridlist[i].state = 1;
-      }
-    }
-  };
+  // const initGirdState = (newGridlist: any) => {
+  //   for (let i = 0; i < newGridlist.length; i++) {
+  //     let {
+  //       left: targetLeft,
+  //       top: targetTop,
+  //       zIndex: targetZIndex,
+  //       state: targetState,
+  //     } = newGridlist[i];
+  //     if (targetState !== 2) {
+  //       let isClick = true;
+  //       //TODO
+  //       for (let j = 0; j < newGridlist.length; j++) {
+  //         let {
+  //           left: OtherLeft,
+  //           top: OtherTop,
+  //           zIndex: OtherZIndex,
+  //           state: OtherState,
+  //         } = newGridlist[j];
+  //         if (
+  //           targetZIndex < OtherZIndex &&
+  //           Math.abs(OtherLeft - targetLeft) <= 10 &&
+  //           Math.abs(OtherTop - targetTop) <= 10 &&
+  //           OtherState !== 2
+  //         ) {
+  //           isClick = false;
+  //           continue;
+  //         }
+  //       }
+  //       if (isClick) newGridlist[i].state = 1;
+  //     }
+  //   }
+  // };
 
   //重新开始
   const hanldeReset = () => {
@@ -175,15 +209,14 @@ function index({ dispatch, setting }) {
     }, 1000);
   };
 
-  useEffect(() => {
-    // GridList = [];
-    // initGridList(GridList, setting);
-    // console.log(GridList, setting);
-
-    let newGridlist = gridList.slice();
-    initGirdState(newGridlist);
-    setGridList(newGridlist);
-  }, []);
+  // useEffect(() => {
+  //   // GridList = [];
+  //   // initGridList(GridList, setting);
+  //   // console.log(GridList, setting);
+  //   // let newGridlist = gridList.slice();
+  //   // initGirdState(newGridlist);
+  //   // setGridList(newGridlist);
+  // }, []);
 
   useEffect(() => {
     if (selectedGridList.length === 0) {

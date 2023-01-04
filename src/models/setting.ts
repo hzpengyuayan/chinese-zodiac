@@ -6,6 +6,10 @@ export default {
     Layers: 5, //生成几层 5
     Row: 8, //多少行
     Col: 8, //多少列
+    // Sort: 1,
+    // Layers: 1,
+    // Row: 2,
+    // Col: 2,
   },
   reducers: {
     update(state: any, { payload: updatedSetting }: any) {
