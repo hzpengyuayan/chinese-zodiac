@@ -239,17 +239,25 @@ function index({ dispatch, setting }) {
     <div className={styles.box}>
       <h2>Chinese Zodiac</h2>
       <div className={styles.container}>
-        {gridList.map((item: any, index: number) => {
-          if (item.state !== 2) {
-            return (
-              <Grid
-                gridInfo={item}
-                key={item.id}
-                removeGird={() => removeGird(index)}
-              ></Grid>
-            );
-          }
-        })}
+        <div
+          style={{
+            position: "absolute",
+            top: `${(15 - setting.Row) * 0.5 * 20}px`,
+            left: `${(15 - setting.Col) * 0.5 * 20}px`,
+          }}
+        >
+          {gridList.map((item: any, index: number) => {
+            if (item.state !== 2) {
+              return (
+                <Grid
+                  gridInfo={item}
+                  key={item.id}
+                  removeGird={() => removeGird(index)}
+                ></Grid>
+              );
+            }
+          })}
+        </div>
       </div>
 
       <div className={styles.footer}>
