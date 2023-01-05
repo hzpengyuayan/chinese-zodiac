@@ -119,7 +119,7 @@ function initGirdState(GridList: GridNode[]) {
   }
 }
 
-let typeList = new Array(12).fill(0);
+let typeList = new Array(12).fill(0); //记录每个生肖的个数
 
 function index({ setting }: { setting: GameSetting }) {
   const [gridList, setGridList] = useState<GridNode[]>(() =>
@@ -287,12 +287,6 @@ function index({ setting }: { setting: GameSetting }) {
         </div>
       </div>
 
-      <div className={styles.tools}>
-        <Tool imgSrc={shift_out} onClick={handleShiftOut}></Tool>
-        <Tool imgSrc={back} onClick={handleBack}></Tool>
-        <Tool imgSrc={relayout} onClick={handleRelayout}></Tool>
-      </div>
-
       <div className={styles["storage-grids"]}>
         {storageGridList.map((item: GridNode, index: number) => {
           return (
@@ -311,6 +305,12 @@ function index({ setting }: { setting: GameSetting }) {
             return <Grid gridInfo={item} key={item.id}></Grid>;
           })}
         </div>
+      </div>
+
+      <div className={styles.tools}>
+        <Tool imgSrc={shift_out} onClick={handleShiftOut}></Tool>
+        <Tool imgSrc={back} onClick={handleBack}></Tool>
+        <Tool imgSrc={relayout} onClick={handleRelayout}></Tool>
       </div>
 
       <Comfirm

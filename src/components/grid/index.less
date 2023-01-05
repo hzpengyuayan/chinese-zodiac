@@ -1,13 +1,16 @@
 @gridSize: 20px; //格子大小为20px
 
 .grid {
+  box-sizing: border-box;
   display: inline-block;
   width: @gridSize;
   height: @gridSize;
-  border: 1px solid #ccc;
-  background-image: url("../../assets/imgs/Zodiac.png");
+  border: 1px solid #000;
+  box-shadow: 0 0 2.3px #888888 inset;
+  border-radius: 3px;
+  background-size: 100%;
+  background-position: center;
   background-repeat: no-repeat;
-  background-size: 70px 68px;
   background-blend-mode: multiply;
   font-size: 9px;
   position: absolute;

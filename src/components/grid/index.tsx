@@ -1,6 +1,7 @@
 import React from "react";
 import { Props } from "./interface";
 import styles from "./index.less";
+import bg0 from "@/assets/imgs/0.png";
 
 //格子固定大小
 const GridSize = 20;
@@ -13,12 +14,6 @@ export function Grid(props: Props) {
     onClick && onClick();
   };
 
-  //雪碧图偏移量
-  const getPosition = () => {
-    const { type } = gridInfo;
-    return ` ${(type % 4) * -18}px ${Math.floor(type / 4) * -25}px`;
-  };
-
   return (
     <>
       {gridInfo.state !== 2 && (
@@ -28,7 +23,7 @@ export function Grid(props: Props) {
             top: gridInfo.top,
             left: gridInfo.left,
             cursor: `${gridInfo.state === 1 && "pointer"}`,
-            backgroundPosition: getPosition(),
+            backgroundImage: `url(${require(`@/assets/imgs/${gridInfo.type}.png`)})`,
             backgroundColor: `${gridInfo.state === 1 ? "#fff" : "gray"}`,
             zIndex: gridInfo.zIndex,
           }}
@@ -41,7 +36,8 @@ export function Grid(props: Props) {
           className={styles.grid}
           style={{
             position: "static",
-            backgroundPosition: getPosition(),
+            backgroundImage: `url(${require(`@/assets/imgs/${gridInfo.type}.png`)})`,
+            backgroundColor: "#fff",
           }}
           onClick={handleClick}
         ></div>
