@@ -6,19 +6,17 @@ import styles from "./index.less";
 const GridSize = 20;
 
 export function Grid(props: Props) {
-  const { gridInfo } = props;
+  const { gridInfo, removeGird, onClick } = props;
 
   //点击事件
   const handleClick = () => {
-    if (gridInfo.state === 1) {
-      props.removeGird && props.removeGird(); //删除此格子
-    }
+    onClick && onClick();
   };
 
   //雪碧图偏移量
   const getPosition = () => {
     const { type } = gridInfo;
-    return ` ${((type - 1) % 4) * -18}px ${Math.floor((type - 1) / 4) * -25}px`;
+    return ` ${(type % 4) * -18}px ${Math.floor(type / 4) * -25}px`;
   };
 
   return (
@@ -45,6 +43,7 @@ export function Grid(props: Props) {
             position: "static",
             backgroundPosition: getPosition(),
           }}
+          onClick={handleClick}
         ></div>
       )}
     </>

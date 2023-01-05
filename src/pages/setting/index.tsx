@@ -60,8 +60,8 @@ const GameMode = [
     setting: {
       Sort: 333,
       Layers: 20,
-      Row: 10,
-      Col: 10,
+      Row: 15,
+      Col: 15,
     },
   },
 ];
