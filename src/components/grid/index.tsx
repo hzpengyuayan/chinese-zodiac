@@ -1,13 +1,12 @@
 import React from "react";
 import { Props } from "./interface";
 import styles from "./index.less";
-import bg0 from "@/assets/imgs/0.png";
 
 //格子固定大小
 const GridSize = 20;
 
 export function Grid(props: Props) {
-  const { gridInfo, removeGird, onClick } = props;
+  const { gridInfo, onClick } = props;
 
   //点击事件
   const handleClick = () => {
@@ -16,32 +15,19 @@ export function Grid(props: Props) {
 
   return (
     <>
-      {gridInfo.state !== 2 && (
-        <div
-          className={styles.grid}
-          style={{
-            top: gridInfo.top,
-            left: gridInfo.left,
-            cursor: `${gridInfo.state === 1 && "pointer"}`,
-            backgroundImage: `url(${require(`@/assets/imgs/${gridInfo.type}.png`)})`,
-            backgroundColor: `${gridInfo.state === 1 ? "#fff" : "gray"}`,
-            zIndex: gridInfo.zIndex,
-          }}
-          onClick={handleClick}
-        ></div>
-      )}
-
-      {gridInfo.state === 2 && (
-        <div
-          className={styles.grid}
-          style={{
-            position: "static",
-            backgroundImage: `url(${require(`@/assets/imgs/${gridInfo.type}.png`)})`,
-            backgroundColor: "#fff",
-          }}
-          onClick={handleClick}
-        ></div>
-      )}
+      <div
+        className={styles.grid}
+        style={{
+          position: gridInfo.state === 2 ? "static" : "absolute",
+          top: gridInfo.state === 2 ? undefined : gridInfo.top,
+          left: gridInfo.state === 2 ? undefined : gridInfo.left,
+          zIndex: gridInfo.zIndex,
+          cursor: gridInfo.state === 0 ? "default" : "pointer",
+          backgroundImage: `url(${require(`@/assets/imgs/${gridInfo.type}.png`)})`,
+          backgroundColor: gridInfo.state === 0 ? "#888" : "#fff",
+        }}
+        onClick={handleClick}
+      ></div>
     </>
   );
 }
