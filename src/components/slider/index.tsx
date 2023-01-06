@@ -5,10 +5,9 @@ import { Props } from "./interface";
 export function Slider(props: Props) {
   let { min, max, step = 1, value, onChange } = props;
   return (
-    <div>
-      <span>{min}</span>
+    <div className={styles.slider}>
+      <span className={styles["left-label"]}>{min}</span>
       <input
-        className={styles.slider}
         type="range"
         min={min}
         max={max}
@@ -17,11 +16,8 @@ export function Slider(props: Props) {
         onInput={(e: React.ChangeEvent<HTMLInputElement>) => {
           onChange && onChange(e.target.value);
         }}
-        style={{
-          backgroundSize: `${(value / max) * 100}%`,
-        }}
       />
-      <span>{max}</span>
+      <span className={styles["right-label"]}>{max}</span>
     </div>
   );
 }

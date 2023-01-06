@@ -29,9 +29,6 @@
     color: red;
   }
 
-  // &-defined {
-  //   padding-left: 0;
-  // }
   &-defined-title {
     text-align: center;
   }
@@ -43,10 +40,20 @@
   &-defined-list > li {
     display: flex;
     justify-content: space-between;
+    .setting-label {
+      font-size: 14px;
+      width: 40%;
+      > i {
+        font-style: normal;
+        font-weight: bold;
+        color: #ff5500;
+      }
+    }
+    .setting-slider {
+      width: 60%;
+    }
   }
-  &-defined-list > li .setting-slider {
-    width: 50%;
-  }
+
   &-defined-btn {
     text-align: center;
   }
