@@ -59,7 +59,7 @@ const GameMode = [
   {
     type: "地狱",
     setting: {
-      Sort: 333,
+      Sort: 423,
       Layers: 20,
       Row: 15,
       Col: 15,
@@ -74,7 +74,6 @@ function calcMaxNum(row: number, col: number, layers: number) {
     maxNum += (row - i) * (col - i);
   }
   return maxNum;
-  return Math.floor(maxNum / 3);
 }
 
 function index({
