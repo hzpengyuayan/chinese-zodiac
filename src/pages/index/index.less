@@ -1,17 +1,9 @@
-//@mianColor: #82c504; //默认背景颜色
-@mianColor: #cefd96;
-
-div {
-  box-sizing: border-box;
-}
 .box {
-  // width: 100vw;
   min-width: 375px;
-
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: @mianColor;
+  background: @default-background-color;
   border: 1px solid #ccc;
   box-shadow: 0.3px 0.4px 0.7px rgba(0, 0, 0, 0.02),
     0.8px 1.1px 1.7px rgba(0, 0, 0, 0.028), 1.5px 2px 3.3px rgba(0, 0, 0, 0.035),
@@ -24,9 +16,9 @@ div {
   flex-wrap: wrap;
   align-content: flex-start;
   position: relative;
-  width: 300px;
-  height: 300px;
-  border: 3px solid #ccc;  
+  width: @grid-size*10;
+  height: @grid-size*10;
+  border: 3px solid #ccc;
   .rotate-box {
     position: absolute;
     transition: all 3s ease;
@@ -56,16 +48,15 @@ div {
   padding: 0px !important;
   justify-content: center;
   align-items: center;
-  width: 208px;
-  height: 40px;
-  padding: 10px 50px;
-  background: @mianColor;
+  width: @grid-size*10.3;
+  height: @grid-size*2;
+  background: @default-background-color;
   background: url("@/assets/imgs/fence.png");
   background-size: 100% auto;
   background-repeat: no-repeat;
   margin-top: 10px;
   &-body {
-    width: 200px;
-    height: 20px;
+    width: @grid-size*10;
+    height: @grid-size;
   }
 }

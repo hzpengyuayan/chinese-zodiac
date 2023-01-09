@@ -21,7 +21,7 @@ function initGridList(GameSetting: GameSetting) {
 
   //初始化格子样式
   const initGirdStyle = () => {
-    let zIndex = Math.floor(Math.random() * Layers); //随机生成层数
+    let zIndex = Math.floor(Math.random() * Layers); //随机生成层数 
     return {
       zIndex,
       row: Math.ceil(Math.random() * (Row - zIndex)), //根据层数，随机生成行
@@ -52,7 +52,7 @@ function initGridList(GameSetting: GameSetting) {
   }
 
   //初始化所有格子状态
-  initGirdState(GridList);
+  initGirdState(GridList, GameSetting);
 
   return GridList;
 }
@@ -86,7 +86,7 @@ function createUniqueGrid(
 }
 
 //初始化格子状态
-function initGirdState(GridList: GridNode[]) {
+function initGirdState(GridList: GridNode[], GameSetting: GameSetting) {
   for (let i = 0; i < GridList.length; i++) {
     let {
       left: targetLeft,
@@ -106,8 +106,8 @@ function initGirdState(GridList: GridNode[]) {
         } = GridList[j];
         if (
           targetZIndex < OtherZIndex &&
-          Math.abs(OtherLeft - targetLeft) <= 10 &&
-          Math.abs(OtherTop - targetTop) <= 10 &&
+          Math.abs(OtherLeft - targetLeft) <= GameSetting.GridSize * 0.5 &&
+          Math.abs(OtherTop - targetTop) <= GameSetting.GridSize * 0.5 &&
           OtherState !== 2
         ) {
           isClick = false;
@@ -137,7 +137,7 @@ function index({ setting }: { setting: GameSetting }) {
     newGridlist[index].state = 2;
     addToFooter(newGridlist[index]);
     //判断格子是否可点击
-    initGirdState(newGridlist);
+    initGirdState(newGridlist, setting);
     setGridList(newGridlist);
   };
 
@@ -210,7 +210,7 @@ function index({ setting }: { setting: GameSetting }) {
         break;
       }
     }
-    initGirdState(newGridlist);
+    initGirdState(newGridlist, setting);
     setSelectedGridList(newSelectedGridList);
     setGridList(newGridlist);
   };
@@ -230,7 +230,7 @@ function index({ setting }: { setting: GameSetting }) {
         item.id = `${item.zIndex}-${item.row}-${item.col}-hasRotate`;
       }
     });
-    initGirdState(newGridList);
+    initGirdState(newGridList, setting);
     setGridList(newGridList);
   };
 

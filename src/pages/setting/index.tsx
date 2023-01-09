@@ -1,71 +1,9 @@
 import { useEffect, useState } from "react";
-import { connect } from "dva";
 import { Slider, Button } from "@/components";
+import { GameMode } from "@/utils";
+import { connect } from "dva";
 import { GameSetting } from "@/typings";
 import styles from "./index.less";
-
-const SettingsInfo = [
-  {
-    min: 3,
-    max: 999,
-    step: 3,
-  },
-  {
-    min: 1,
-    max: 10,
-    step: 1,
-  },
-  {
-    min: 1,
-    max: 10,
-    step: 1,
-  },
-  {
-    min: 1,
-    max: 10,
-    step: 1,
-  },
-];
-
-//游戏模式难度定义
-const GameMode = [
-  {
-    type: "简单",
-    setting: {
-      Sort: 3,
-      Layers: 3,
-      Row: 3,
-      Col: 3,
-    },
-  },
-  {
-    type: "中等",
-    setting: {
-      Sort: 40,
-      Layers: 5,
-      Row: 8,
-      Col: 8,
-    },
-  },
-  {
-    type: "困难",
-    setting: {
-      Sort: 100,
-      Layers: 8,
-      Row: 10,
-      Col: 10,
-    },
-  },
-  {
-    type: "地狱",
-    setting: {
-      Sort: 423,
-      Layers: 20,
-      Row: 15,
-      Col: 15,
-    },
-  },
-];
 
 //计算最大格子数量
 function calcMaxNum(row: number, col: number, layers: number) {
@@ -83,9 +21,6 @@ function index({
   dispatch: Function;
   setting: GameSetting;
 }) {
-  console.log(setting);
-
-  const [mode, setMode] = useState(0); //选择游戏模式
   const [values, setvalues] = useState(setting);
   useEffect(() => {
     setvalues(setting);
@@ -171,7 +106,7 @@ function index({
             <div className={styles["setting-slider"]}>
               <Slider
                 min={1}
-                max={15}
+                max={300 / setting.GridSize}
                 value={values.Row}
                 onChange={(value: number) =>
                   setvalues({
@@ -190,7 +125,7 @@ function index({
             <div className={styles["setting-slider"]}>
               <Slider
                 min={1}
-                max={15}
+                max={300 / setting.GridSize}
                 value={values.Col}
                 onChange={(value: number) =>
                   setvalues({

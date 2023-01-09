@@ -12,11 +12,11 @@
 
 1.  git clone git@gitee.com:hzpenyuyan/chinese-zodiac.git
 2.  git i
-3.  npm run start
+3.  npm run dev
 
-#### 使用说明
+#### 自定义说明
 
-1.  xxxx
+1.  若需修改格子大小，则去src/utils里修改GridSize
 2.  xxxx
 3.  xxxx
 
