@@ -14,6 +14,13 @@ function calcMaxNum(row: number, col: number, layers: number) {
   return maxNum;
 }
 
+const icons = [
+  "icon-xiaolian1-xianxing",
+  "icon-xiaolian3-xianxing",
+  "icon-xiaolian2-xianxing",
+  "icon-kuqi",
+];
+
 function index({
   dispatch,
   setting,
@@ -84,7 +91,10 @@ function index({
   return (
     <div className={styles["setting"]}>
       <div className={styles["setting-mode"]}>
-        <div className={styles["setting-mode-title"]}>模式选择</div>
+        <div className={styles["setting-label"]}>
+          <i className={`iconfont icon-zidingyi`} />
+          模式选择
+        </div>
         <div className={styles["setting-mode-context"]}>
           {GameMode.map((item, index) => (
             <span
@@ -92,17 +102,21 @@ function index({
               key={item.type}
               onClick={() => handleSelectMode(index)}
             >
+              <i className={`iconfont ${icons[index]}`} />
               {item.type}
             </span>
           ))}
         </div>
       </div>
       <div className={styles["setting-defined"]}>
-        <div className={styles["setting-defined-title"]}>自定义设置</div>
+        <div className={styles["setting-label"]}>
+          <i className={`iconfont icon-tiaojiemoshi`} />
+          难度设置
+        </div>
         <ul className={styles["setting-defined-list"]}>
           <li>
             <span className={styles["setting-label"]}>
-              当前个数: <i>{values.Sort * 3}</i> (个)
+              当前个数: <i>{values.Sort * 3}</i>
             </span>
             <div className={styles["setting-slider"]}>
               <Slider
@@ -121,7 +135,7 @@ function index({
           </li>
           <li>
             <span className={styles["setting-label"]}>
-              当前层数: <i>{values.Layers}</i> (层)
+              当前层数: <i>{values.Layers}</i>
             </span>
             <div className={styles["setting-slider"]}>
               <Slider
@@ -140,7 +154,7 @@ function index({
           </li>
           <li>
             <span className={styles["setting-label"]}>
-              当前行数: <i>{values.Row}</i> (行)
+              当前行数: <i>{values.Row}</i>
             </span>
             <div className={styles["setting-slider"]}>
               <Slider
@@ -159,7 +173,7 @@ function index({
           </li>
           <li>
             <span className={styles["setting-label"]}>
-              当前列数: <i>{values.Col}</i> (列)
+              当前列数: <i>{values.Col}</i>
             </span>
             <div className={styles["setting-slider"]}>
               <Slider
@@ -178,11 +192,14 @@ function index({
           </li>
         </ul>
         <div className={styles["setting-defined-btn"]}>
-          <Button onClick={handleSaveDefinedSetting}>保存自定义设置</Button>
+          <Button onClick={handleSaveDefinedSetting}>保存难度设置</Button>
         </div>
       </div>
       <div className={styles["setting-imgs"]}>
-        <div className={styles["setting-imgs-title"]}>格子图片设置</div>
+        <div className={styles["setting-label"]}>
+          <i className={`iconfont icon-tupiantianjia`} />
+          图片设置
+        </div>
         <div className={styles["setting-imgs-context"]}>
           <div className={styles["setting-imgs-notice"]}>
             注意:必须一次性上传十二张图片,只支持jpg、jpeg、png格式,页面刷新后生效
@@ -199,8 +216,9 @@ function index({
             ))}
           </div>
         </div>
-        <div className={styles["setting-imgs-clear"]} onClick={handleClearImg}>
-          清除格子图片设置
+
+        <div className={styles["setting-imgs-clear"]}>
+          <Button onClick={handleClearImg}>清除图片设置</Button>
         </div>
       </div>
     </div>
