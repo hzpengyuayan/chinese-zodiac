@@ -21,7 +21,7 @@ function initGridList(GameSetting: GameSetting) {
 
   //初始化格子样式
   const initGirdStyle = () => {
-    let zIndex = Math.floor(Math.random() * Layers); //随机生成层数 
+    let zIndex = Math.floor(Math.random() * Layers); //随机生成层数
     return {
       zIndex,
       row: Math.ceil(Math.random() * (Row - zIndex)), //根据层数，随机生成行

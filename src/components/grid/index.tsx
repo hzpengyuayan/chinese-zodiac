@@ -1,9 +1,15 @@
 import React from "react";
+import { get } from "@/utils";
 import { Props } from "./interface";
 import styles from "./index.less";
 
-//格子固定大小
-const GridSize = 20;
+let imgFiles: string[] = [];
+
+//初始化判断本地是否存有图片
+function initImgFiles() {
+  imgFiles = get("ImgFiles", 1000 * 60 * 60 * 24 * 7) || [];
+}
+initImgFiles();
 
 export function Grid(props: Props) {
   const { gridInfo, onClick } = props;
@@ -23,7 +29,11 @@ export function Grid(props: Props) {
           left: gridInfo.state === 2 ? undefined : gridInfo.left,
           zIndex: gridInfo.zIndex,
           cursor: gridInfo.state === 0 ? "default" : "pointer",
-          backgroundImage: `url(${require(`@/assets/imgs/${gridInfo.type}.png`)})`,
+          backgroundImage: `url(${
+            imgFiles.length > 0
+              ? imgFiles[gridInfo.type]
+              : require(`@/assets/imgs/${gridInfo.type}.png`)
+          })`,
           backgroundColor: gridInfo.state === 0 ? "#888" : "#fff",
         }}
         onClick={handleClick}

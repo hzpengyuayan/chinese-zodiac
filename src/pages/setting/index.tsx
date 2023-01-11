@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Slider, Button } from "@/components";
-import { GameMode } from "@/utils";
+import { GameMode, set, clear } from "@/utils";
 import { connect } from "dva";
 import { GameSetting } from "@/typings";
 import styles from "./index.less";
@@ -22,6 +22,7 @@ function index({
   setting: GameSetting;
 }) {
   const [values, setvalues] = useState(setting);
+  const [imgFiles, setImgFiles] = useState([]);
   useEffect(() => {
     setvalues(setting);
   }, [setting]);
@@ -40,6 +41,44 @@ function index({
       type: "setting/update",
       payload: values,
     });
+  };
+
+  //上传图片文件
+  const handleUpLoadImg = async (e) => {
+    if (e.target.files.length !== 12) {
+      return alert("必须一次性传入12张图片");
+    }
+    const uploadFileAsync = (file: any) => {
+      if (window.FileReader) {
+        return new Promise((resolve, reject) => {
+          const fileReader = new FileReader();
+          fileReader.readAsDataURL(file);
+          fileReader.onload = (e) => {
+            resolve(e.target?.result ? e.target.result : "");
+          };
+          fileReader.onerror = (e) => {
+            reject(e);
+          };
+        });
+      } else {
+        return alert("当前浏览器不支持此功能，请切换浏览器进行操作。");
+      }
+    };
+    let files = e.target.files;
+
+    let newImgFiles: any[] = [];
+    for (let i = 0; i < files.length; i++) {
+      const res = await uploadFileAsync(files[i]);
+      newImgFiles.push(res);
+    }
+    setImgFiles(newImgFiles);
+    set("ImgFiles", newImgFiles); //存入浏览器本地
+  };
+
+  //清除所有图片
+  const handleClearImg = () => {
+    clear("ImgFiles");
+    alert("清除成功");
   };
 
   return (
@@ -140,6 +179,28 @@ function index({
         </ul>
         <div className={styles["setting-defined-btn"]}>
           <Button onClick={handleSaveDefinedSetting}>保存自定义设置</Button>
+        </div>
+      </div>
+      <div className={styles["setting-imgs"]}>
+        <div className={styles["setting-imgs-title"]}>格子图片设置</div>
+        <div className={styles["setting-imgs-context"]}>
+          <div className={styles["setting-imgs-notice"]}>
+            注意:必须一次性上传十二张图片,只支持jpg、jpeg、png格式,页面刷新后生效
+          </div>
+          <input
+            type="file"
+            accept=".jpg, .jpeg, .png"
+            multiple
+            onChange={handleUpLoadImg}
+          ></input>
+          <div>
+            {imgFiles.map((item) => (
+              <img src={item} alt="" width={30} height={30} key={item} />
+            ))}
+          </div>
+        </div>
+        <div className={styles["setting-imgs-clear"]} onClick={handleClearImg}>
+          清除格子图片设置
         </div>
       </div>
     </div>
