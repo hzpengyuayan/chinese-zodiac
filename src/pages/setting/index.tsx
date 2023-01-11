@@ -9,8 +9,18 @@ import styles from "./index.less";
 function calcMaxNum(row: number, col: number, layers: number) {
   let maxNum = 0;
   for (let i = 0; i < layers; i++) {
-    maxNum += (row - i) * (col - i);
+    if (row === 1) {
+      maxNum += col--;
+    } else if (col === 1) {
+      maxNum += row--;
+    } else if (row === 1 && col === 1) {
+      maxNum ++;
+      break;
+    } else {
+      maxNum += row-- * col--;
+    }
   }
+  maxNum = Math.floor(maxNum / 3) * 3;
   return maxNum;
 }
 
@@ -145,6 +155,11 @@ function index({
                 onChange={(value: number) =>
                   setvalues({
                     ...values,
+                    Sort:
+                      calcMaxNum(values.Row, values.Col, values.Layers) / 3 <
+                      values.Sort
+                        ? calcMaxNum(values.Row, values.Col, values.Layers) / 3
+                        : values.Sort,
                     Layers: value,
                   })
                 }
@@ -158,12 +173,17 @@ function index({
             </span>
             <div className={styles["setting-slider"]}>
               <Slider
-                min={1}
+                min={2}
                 max={300 / setting.GridSize}
                 value={values.Row}
                 onChange={(value: number) =>
                   setvalues({
                     ...values,
+                    Sort:
+                      calcMaxNum(value, values.Col, values.Layers) / 3 <
+                      values.Sort
+                        ? calcMaxNum(value, values.Col, values.Layers) / 3
+                        : values.Sort,
                     Row: value,
                   })
                 }
@@ -177,12 +197,17 @@ function index({
             </span>
             <div className={styles["setting-slider"]}>
               <Slider
-                min={1}
+                min={2}
                 max={300 / setting.GridSize}
                 value={values.Col}
                 onChange={(value: number) =>
                   setvalues({
                     ...values,
+                    Sort:
+                      calcMaxNum(values.Row, value, values.Layers) / 3 <
+                      values.Sort
+                        ? calcMaxNum(values.Row, value, values.Layers) / 3
+                        : values.Sort,
                     Col: value,
                   })
                 }
