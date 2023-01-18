@@ -200,19 +200,21 @@ function index({ setting }: { setting: GameSetting }) {
 
   //点击撤销
   const handleBack = () => {
-    let newSelectedGridList = selectedGridList.slice();
-    let newGridlist = gridList.slice();
-    const lastGrid = selectedGridList[selectedGridList.length - 1];
-    newSelectedGridList.pop(); //选中列表去掉最后一个
-    for (let i = 0; i < newGridlist.length; i++) {
-      if (newGridlist[i].id === lastGrid.id) {
-        newGridlist[i].state = 1;
-        break;
+    if (selectedGridList.length > 0) {
+      let newSelectedGridList = selectedGridList.slice();
+      let newGridlist = gridList.slice();
+      const lastGrid = selectedGridList[selectedGridList.length - 1];
+      newSelectedGridList.pop(); //选中列表去掉最后一个
+      for (let i = 0; i < newGridlist.length; i++) {
+        if (newGridlist[i].id === lastGrid.id) {
+          newGridlist[i].state = 1;
+          break;
+        }
       }
+      initGirdState(newGridlist, setting);
+      setSelectedGridList(newSelectedGridList);
+      setGridList(newGridlist);
     }
-    initGirdState(newGridlist, setting);
-    setSelectedGridList(newSelectedGridList);
-    setGridList(newGridlist);
   };
 
   //点击重新布局
